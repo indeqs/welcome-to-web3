@@ -2,12 +2,12 @@
 
 - This is a very simple project aimed to teach/introduce people to web3 development using raw JavaScript
 - There is no fancy framework used! Just HTML, CSS and JavaScript
-- The server is run using express JS
+- The server relies on express JS
 
 # How to use it
 
 1. Clone the repo `git clone https://github.com/indeqs/welcome-to-web3.git`
-2. Move into the directory `cd welcome-to-web3`
+2. Move into the created directory `cd welcome-to-web3`
 3. Install Express JS if you do not have it installed, `npm i express`
 4. Start the server with `node server.js`. The site is now available at `http://localhost:8097`
 
