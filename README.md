@@ -6,8 +6,8 @@
 
 # How to use it
 
-1. Clone the repo `git clone `
-2. Move into the directory `cd `
+1. Clone the repo `git clone https://github.com/indeqs/welcome-to-web3.git`
+2. Move into the directory `cd welcome-to-web3`
 3. Install Express JS if you do not have it installed, `npm i express`
 4. Start the server with `node server.js`. The site is now available at http://localhost:8097
 
