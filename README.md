@@ -19,6 +19,6 @@
 3. express JS -> install with `npm i express`
 
 
-## Know issues:
+## Known issues:
 - For some wierd reason, you have to donate yourself some 0.001 SepoliaETH first for you to be able to use the `Get Price of ETH` functionality.
 - Left that to the user to fix it, cannot spoonfeed you everything right?
