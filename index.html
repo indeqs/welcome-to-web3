@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8' />
+    <title>Web3</title>
+</head>
+
+<body><br><br>
+    <div style="text-align: center; font-size: large;">
+        <p>This is a very basic web page aimed to introduce one to web3 development using raw JavaScript<br><br>
+            <b>NO FANCY FRAMEWORKS USED!</b>
+        </p>
+        <p> It uses chainlink price feed on the sepolia testnet to get the price of ETH in USD </p> <br><br><br>
+        <hr>
+    </div>
+    <pre id='log' style="font-size: large;"> You need to approve this website to connect to your Metamask wallet. </pre>
+    <br><br>
+    <div style="text-align: center;">
+        <button id="connect" onclick="connectWallet()" style="background-color: blueviolet;"> Connect Your Wallet!
+        </button>
+    </div>
+    <br> <br> <br>
+
+    <div style="text-align: center;">
+        <button id="selftransaction" onclick="selfTransaction()" style="background-color: brown;"> Send yourself 0.001
+            SepoliaETH</button>
+    </div>
+    <br> <br> <br>
+
+    <div style="text-align: center;">
+        <button id="connect" onclick="getPrice()" style="background-color: green;"> Get Price of ETH! </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@4.5.0/dist/web3.min.js"></script>
+    <!-- We load the script web3.min.js so as to use web3.js functions,ie web3.min.js acts as a library. Removing the script will cause your interactions to the ethereum blockchain using web3.js, not to work completly! -->
+    <!-- So it's not a useless script import. DO NOT REMOVE IT! YOU HAVE BEEN WARNED!-->
+    <script>
+        let accounts;
+
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                web3 = new Web3(window.ethereum);
+                accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts',
+                });
+            } else {
+                document.getElementById('log').innerHTML =
+                    'Please install Metamask to connect to the Ethereum blockchain.';
+            }
+        }
+
+        async function selfTransaction() {
+            if (!accounts || accounts.length === 0) {
+                alert("Connect your wallet first!")
+            } else {
+                console.log('Accounts as seen from Metamask are: ', accounts);
+
+                try {
+                    const transactionReceipt = await web3.eth.sendTransaction({
+                        from: accounts[0],
+                        to: accounts[0],
+                        value: web3.utils.toWei('0.001', 'ether'),
+                    });
+
+                    document.getElementById('log').textContent = `Sending a self transaction to address ${accounts[0]} done! \n\n`;
+
+                    console.log("Transaction Receipt:", transactionReceipt);
+
+                    document.getElementById('log').textContent += `\n  Transaction hash: ${transactionReceipt.transactionHash}`;
+                    document.getElementById('log').textContent += `\n  Gas Used: ${transactionReceipt.gasUsed} gwei`;
+                    document.getElementById('log').textContent += `\n  BlockHash: ${transactionReceipt.blockHash}`;
+                    document.getElementById('log').textContent += `\n  BlockNumber: ${transactionReceipt.blockNumber}`;
+
+                } catch (error) {
+                    console.log('error', error);
+                    document.getElementById('log').textContent = 'An error occured: ' + JSON.stringify(error, null, '  ');
+                }
+            }
+        };
+
+        async function getPrice() {
+            const ABI = [{
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [],
+                "name": "getChainlinkDataFeedLatestAnswer",
+                "outputs": [{
+                    "internalType": "int256",
+                    "name": "",
+                    "type": "int256"
+                }],
+                "stateMutability": "view",
+                "type": "function"
+            }
+            ]
+
+            const contractAddress = '0xFB3c913fD6ab1082C7B8e9a0888aE7a5aa03Eae7';
+            const contractInstance = new web3.eth.Contract(ABI, contractAddress);
+
+            try {
+                const priceOfETHfromChainlink = await contractInstance.methods.getChainlinkDataFeedLatestAnswer().call();
+
+                /* 
+                return value from calling getChainlinkDataFeedLatestAnswer from the contract 0xFB3c913fD6ab1082C7B8e9a0888aE7a5aa03Eae7 is correct to
+                8 decimal places. So we divide by 10**8 to get the original value.
+                */
+
+                const priceOfETH = parseFloat(priceOfETHfromChainlink) / Math.pow(10, 8);
+                alert(`Price of ETH is ${priceOfETH} USD`);
+            } catch (error) {
+                console.error('Error getting price:', error);
+                alert('Error getting price. Please check console for details.');
+            }
+        }
+    </script>
+</body>
+
+</html>
