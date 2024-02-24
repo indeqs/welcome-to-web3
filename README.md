@@ -21,4 +21,4 @@
 
 ## Known issues:
 - For some wierd reason, you have to donate yourself some 0.001 SepoliaETH first for you to be able to use the `Get Price of ETH` functionality.
-- Left that to the user to fix it, cannot spoonfeed you everything right?
+- Left that to the user to fix it, cannot spoon feed you everything right?
