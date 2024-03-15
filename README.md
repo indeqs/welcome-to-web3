@@ -1,4 +1,4 @@
-# What this is?
+# What is this?
 
 - This is a very simple project aimed to teach/introduce people to web3 development using raw JavaScript
 - There is no fancy framework used! Just HTML, CSS and JavaScript
